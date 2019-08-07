@@ -114,10 +114,15 @@ function viewItems() {
                     function(error) {
                         if (error) throw error;
                         console.log("Items removed from inventory.");
-                        viewItems();
+                        start();
                     }
                 )
+                console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 console.log("Transaction approved.")
+                console.log("                                           ")
+                console.log("Your order total is $" + chosenItem.price * response.amount + ".")
+                console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
                     } else {
                 console.log("Sorry, that quantity of item is unavailable.")
                 viewItems();
