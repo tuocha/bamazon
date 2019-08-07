@@ -13,16 +13,16 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("sneakers", "clothing", 45, 100);
+VALUES ("ametrine necklace", "clothing", 45, 100);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("toothpicks", "household", .50, 1000);
+VALUES ("incense", "household", .50, 1000);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Sailor Moon DVD", "entertainment", 20, 200);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("banana 12pk", "food", 4, 1300);
+VALUES ("loose sage tea 1lb", "food", 4, 1300);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("cat brush", "pet", 12, 150);
@@ -40,7 +40,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("black hooded cowl", "clothing", 75, 60);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("hexagonal table sculture", "decor", 45, 500);
+VALUES ("hexagonal table sculpture", "decor", 45, 500);
 
 
 

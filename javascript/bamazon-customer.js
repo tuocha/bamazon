@@ -104,7 +104,6 @@ function viewItems() {
                 connection.query(
                     "UPDATE products SET ? WHERE ?",
                     [
-                        //having trouble here. cannot configure mysql syntax properly.
                         {
                         stock_quantity: chosenItem.stock_quantity - response.amount
                         },
