@@ -72,7 +72,7 @@ function viewItems() {
         if (err) throw err;
         inquirer.prompt([
             {
-                name: "selectedItem",
+                name: "itemsDisplay",
                 type: "rawlist",
                 message: "Which item would you like to purchase?",
                 pageSize: 12,
@@ -93,23 +93,36 @@ function viewItems() {
                 message: "How many would you like?"
             }
         ]).then(function (response) {
-            var chosenItem;
-            for (var i = 0; i < results.length; i++) {
-              if (results[i].product_name === response.selectedItem) {
+            for (let i = 0; i < results.length; i++) {
+              if (results[i].product_name === response.itemsDisplay) {
                 chosenItem = results[i];
               }
             } 
-            //finding a problem here. 'If' condition is not being met, for some frustrating ass reason.
-            if (chosenItem.stock_quantity > results.amount) {
-                checkoutComplete();
-            } else {
+            var chosenItem;
+
+            if (chosenItem.stock_quantity > parseInt(response.amount)) {
+                connection.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        //having trouble here. cannot configure mysql syntax properly.
+                        {
+                        stock_quantity: chosenItem.stock_quantity - response.amount
+                        },
+                        {
+                        id: chosenItem.id
+                        }
+                    ],
+                    function(error) {
+                        if (error) throw error;
+                        console.log("Items removed from inventory.");
+                        viewItems();
+                    }
+                )
+                console.log("Transaction approved.")
+                    } else {
                 console.log("Sorry, that quantity of item is unavailable.")
                 viewItems();
             }
             })
     })
-    function checkoutComplete(){
-        chosenItem.stock_quantity - results.amount;
-        console.log("Transaction approved.")
-    }
 }
