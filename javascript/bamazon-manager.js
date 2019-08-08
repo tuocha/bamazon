@@ -40,7 +40,7 @@ function start() {
 
         } else if (response.breaker === "add new products") {
             addNew();
-            
+
         } else {
             connection.end();
         }
@@ -71,17 +71,83 @@ function start() {
 }
 
 function forSale() {
-    console.log("for sale")
-}
+    connection.query("SELECT * FROM products", function (err, results) {
+        if (err) throw err;
+
+        let productsArray = [];
+
+        for (let i = 0; i < results.length; i++) {
+            let productInfo = results[i].product_name + " ............. " + results[i].stock_quantity;
+
+            productsArray.push(productInfo);
+        }
+        console.log(productsArray);
+
+    }
+    )
+};
+
 
 function lowInventory() {
-    console.log("low inventory")
+    connection.query("SELECT * FROM products WHERE stock_quantity < 100", function (err, results) {
+        if (err) throw err;
+
+        let productsArray = [];
+
+        for (let i = 0; i < results.length; i++) {
+            let productInfo = results[i].product_name + " ............. " + results[i].stock_quantity;
+
+            productsArray.push(productInfo);
+        }
+        console.log(productsArray);
+
+    })
 }
 
 function addInventory() {
     console.log("add inventory")
-}
+};
+
 
 function addNew() {
-    console.log("add new")
-}
+    connection.query("SELECT * FROM products", function (err, results) {
+        inquirer.prompt([
+            {
+                name: "itemName",
+                type: "input",
+                message: "What is the name of the item you're adding?"
+            },
+            {
+                name: "itemDepartment",
+                type: "list",
+                message: "What department does it fall into?",
+                choices: ["food", "pet", "decor", "household", "clothing"]
+            },
+            {
+                name: "itemPrice",
+                type: "number",
+                message: "How much does it cost?"
+            },
+            {
+                name: "itemQuantity",
+                type: "number",
+                message: "How much do you have in stock?"
+            }
+        ]).then(function(response) {
+            let queryInto = 
+            'INSERT INTO products (product_name, department_name, price, stock_quantity) ' + 
+            'VALUES ("'+ response.itemName + '",' + '"' +
+            response.itemDepartment + '",' +  
+            response.itemPrice + ',' + 
+            response.itemQuantity + ')'
+
+            connection.query(queryInto, function(err, result) {
+                if (err) throw err;
+                console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                console.log("Item added! Now available for purchase.")
+            })
+
+        });
+    });
+
+};

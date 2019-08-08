@@ -75,21 +75,21 @@ function viewItems() {
                 name: "itemsDisplay",
                 type: "rawlist",
                 message: "Which item would you like to purchase?",
-                pageSize: 12,
+                pageSize: productsArray.length,
                 choices: function () {
                     let productsArray = [];
 
                     for (let i = 0; i < results.length; i++) {
-                        // let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
+                        let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
 
-                        productsArray.push(results[i].product_name);
+                        productsArray.push(productInfo);
                     }
                     return productsArray;
                 }
             },
             {
                 name: "amount",
-                type: "input",
+                type: "number",
                 message: "How many would you like?"
             }
         ]).then(function (response) {
