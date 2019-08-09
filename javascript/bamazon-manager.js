@@ -105,7 +105,58 @@ function lowInventory() {
 }
 
 function addInventory() {
-    console.log("add inventory")
+    connection.query("SELECT * FROM products", function (err, results) {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                name: "itemsDisplay",
+                type: "rawlist",
+                message: "Which item would you like to add inventory to?",
+                // pageSize: productsArray.length,
+                choices: function () {
+                    let productsArray = [];
+
+                    for (let i = 0; i < results.length; i++) {
+                        // let productInfo = results[i].product_name + " ............. " + "stock: " + results[i].stock_quantity;
+
+                        productsArray.push(results[i].product_name);
+                    }
+                    return productsArray;
+                }
+            },
+            {
+                name: "quantityUpdate",
+                type: "number",
+                message: "How much are you adding? (enter negatives to remove)"
+            }
+        ]).then(function (response) {
+            for (let i = 0; i < results.length; i++) {
+                if (results[i].product_name === response.itemsDisplay) {
+                  chosenItem = results[i];
+                }
+              } 
+              var chosenItem;
+  
+            connection.query("UPDATE products SET ? WHERE ?",
+                [
+                    {
+                        stock_quantity: chosenItem.stock_quantity + response.quantityUpdate
+                    },
+                    {
+                        id: chosenItem.id
+                    }
+                ],
+                function (error) {
+                    if (error) throw error;
+                    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    console.log("Item quantity updated");
+                    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                    start();
+                }
+            )
+        })
+    })
 };
 
 
@@ -133,15 +184,15 @@ function addNew() {
                 type: "number",
                 message: "How much do you have in stock?"
             }
-        ]).then(function(response) {
-            let queryInto = 
-            'INSERT INTO products (product_name, department_name, price, stock_quantity) ' + 
-            'VALUES ("'+ response.itemName + '",' + '"' +
-            response.itemDepartment + '",' +  
-            response.itemPrice + ',' + 
-            response.itemQuantity + ')'
+        ]).then(function (response) {
+            let queryInto =
+                'INSERT INTO products (product_name, department_name, price, stock_quantity) ' +
+                'VALUES ("' + response.itemName + '",' + '"' +
+                response.itemDepartment + '",' +
+                response.itemPrice + ',' +
+                response.itemQuantity + ')'
 
-            connection.query(queryInto, function(err, result) {
+            connection.query(queryInto, function (err, result) {
                 if (err) throw err;
                 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 console.log("Item added! Now available for purchase.")

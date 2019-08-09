@@ -24,7 +24,7 @@ function start() {
         if (response.breaker === "view") {
             viewItems();
         } else {
-            connection.end;
+            connection.end();
         }
     })
 }
@@ -75,14 +75,14 @@ function viewItems() {
                 name: "itemsDisplay",
                 type: "rawlist",
                 message: "Which item would you like to purchase?",
-                pageSize: productsArray.length,
+                // pageSize: productsArray.length,
                 choices: function () {
                     let productsArray = [];
 
                     for (let i = 0; i < results.length; i++) {
-                        let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
+                        // let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
 
-                        productsArray.push(productInfo);
+                        productsArray.push(results[i].product_name);
                     }
                     return productsArray;
                 }
@@ -100,7 +100,7 @@ function viewItems() {
             } 
             var chosenItem;
 
-            if (chosenItem.stock_quantity > parseInt(response.amount)) {
+            if (chosenItem.stock_quantity > response.amount) {
                 connection.query(
                     "UPDATE products SET ? WHERE ?",
                     [
