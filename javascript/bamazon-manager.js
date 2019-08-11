@@ -44,48 +44,26 @@ function start() {
         } else {
             connection.end();
         }
-        // why tf won't this switch case work? why can't I use an expression in the case????
-        // switch (response) {
 
-        //     case response.breaker === "view products for sale":
-        //         console.log("for sale")
-        //         forSale();
-        //         break;
-
-        //     case response.breaker === "view low inventory":
-        //         lowInventory();
-        //         break;
-
-        //     case response.breaker === "add inventory to items":
-        //         addInventory();
-        //         break;
-
-        //     case response.breaker === "add new products":
-        //         addNew();
-        //         break;
-
-        //     default:
-        //         connection.end();
-        // }
     })
 }
 
 function forSale() {
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
+        console.table(results);
+        // let productsArray = [];
 
-        let productsArray = [];
+        // for (let i = 0; i < results.length; i++) {
+        //     let productInfo = results[i].product_name + " ............. " + results[i].stock_quantity + 
 
-        for (let i = 0; i < results.length; i++) {
-            let productInfo = results[i].product_name + " ............. " + results[i].stock_quantity;
-
-            productsArray.push(productInfo);
-        }
-        console.log(productsArray);
+            // productsArray.push(productInfo);
+        // }
+        // console.log(productsArray);
 
     }
     )
-};
+};c
 
 
 function lowInventory() {
