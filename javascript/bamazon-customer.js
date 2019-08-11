@@ -29,43 +29,6 @@ function start() {
     })
 }
 
-// function postItem() {
-//     inquirer.prompt([
-//         {
-//             name: "item",
-//             type: "input",
-//             message: "What item are posting?"
-//         },
-//         {
-//             name: "category",
-//             type: "input",
-//             message: "What is the category for the item?"
-//         },
-//         {
-//             name: "startingBid",
-//             type: "input",
-//             message: "Enter a starting bid",
-//             validate: function(value) {
-//                 if (isNaN(value) === false) {
-//                     return true;
-//                 } else {
-//                     return false;
-//                 }
-//             }
-//         }]).then(function(response) {
-//             connection.query("INSERT INTO products SET ?",
-//             {
-//                 product_name: response.item,
-//                 department: response.category,
-//                 price: response.startingBid || 0,
-//             },
-//             function(err) {
-//                 if(err) throw err;
-//                 console.log("Auction created successfully");
-//                 start();
-//             })
-//         })
-// }
 
 function viewItems() {
     connection.query("SELECT * FROM products", function (err, results) {
@@ -75,14 +38,14 @@ function viewItems() {
                 name: "itemsDisplay",
                 type: "rawlist",
                 message: "Which item would you like to purchase?",
-                // pageSize: productsArray.length,
+                pageSize: results.length + 2,
                 choices: function () {
                     let productsArray = [];
 
                     for (let i = 0; i < results.length; i++) {
-                        // let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
+                        let productInfo = results[i].product_name + " ............. " + "$" + results[i].price;
 
-                        productsArray.push(results[i].product_name);
+                        productsArray.push(productInfo);
                     }
                     return productsArray;
                 }
@@ -93,12 +56,13 @@ function viewItems() {
                 message: "How many would you like?"
             }
         ]).then(function (response) {
+            var chosenItem = "";
+
             for (let i = 0; i < results.length; i++) {
-              if (results[i].product_name === response.itemsDisplay) {
-                chosenItem = results[i];
+              if (response.itemsDisplay.includes(results[i].product_name)) {
+                chosenItem = results[i]; 
               }
             } 
-            var chosenItem;
 
             if (chosenItem.stock_quantity > response.amount) {
                 connection.query(

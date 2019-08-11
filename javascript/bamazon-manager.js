@@ -112,14 +112,14 @@ function addInventory() {
                 name: "itemsDisplay",
                 type: "rawlist",
                 message: "Which item would you like to add inventory to?",
-                // pageSize: productsArray.length,
+                pageSize: results.length + 2,
                 choices: function () {
                     let productsArray = [];
 
                     for (let i = 0; i < results.length; i++) {
-                        // let productInfo = results[i].product_name + " ............. " + "stock: " + results[i].stock_quantity;
+                        let productInfo = results[i].product_name + " ............. " + "stock: " + results[i].stock_quantity;
 
-                        productsArray.push(results[i].product_name);
+                        productsArray.push(productInfo);
                     }
                     return productsArray;
                 }
@@ -131,7 +131,7 @@ function addInventory() {
             }
         ]).then(function (response) {
             for (let i = 0; i < results.length; i++) {
-                if (results[i].product_name === response.itemsDisplay) {
+                if (response.itemsDisplay.includes(results[i].product_name)) {
                   chosenItem = results[i];
                 }
               } 
